@@ -1,10 +1,9 @@
 $(document).ready(function(){
 	ToDoList = [];
-	setupListeners();	
+	setupListeners();
 });
 
 function setupListeners(){
-	console.log('setting up listeners');
 	$('#new-todo').keypress(function(event) {
   	if ( event.which == 13 ) {
     	event.preventDefault();
@@ -17,15 +16,21 @@ function setupListeners(){
 			$todoObj.Text = $newTodo;
 			$todoObj.Status = '';
 			ToDoList.push($todoObj);
-			console.log(ToDoList);
+			 $('#new-todo').val('');			
 			updateToDoCount();
 			setupLIEvents();
   	}
 	});
+	
+	$('#toggle-all').click(function(){
+		$('#todo-list li').each(function(index){
+			$(this).find('input').prop("checked", true);
+		});
+	});
 }
 
 function updateToDoCount(){
-	$items = $('#todo-list li').length;
+$items = ToDoList.length;
 $('#todo-count strong').text($items);
 }
 
@@ -39,6 +44,7 @@ function setupLIEvents(){
 			ToDoList.splice($ID,1);
 			console.log(ToDoList);
 			$(this).parent().remove();
+			updateToDoCount();
 		});
 	});
 }
